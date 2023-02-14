@@ -18,7 +18,7 @@ public class Ball : MonoBehaviour
 
     void Start()
     {
-        ballLocation = transform.position;
+        //ballLocation = transform.position;
         rb = GetComponent<Rigidbody>();
         SpawnRandomArrow();
     }
