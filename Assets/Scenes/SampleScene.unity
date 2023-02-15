@@ -303,9 +303,10 @@ GameObject:
   m_Component:
   - component: {fileID: 855408144}
   - component: {fileID: 855408143}
+  - component: {fileID: 855408145}
   m_Layer: 0
   m_Name: BallSpawner
-  m_TagString: Untagged
+  m_TagString: Playground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -325,9 +326,9 @@ MonoBehaviour:
   ballPrefab: {fileID: 9165150228630321631, guid: 41a84c1ff89565c4b98b33cab4ef2a60, type: 3}
   ballParent: {fileID: 73437482}
   ballSpawnOffset: 0.45
-  topLeftCorner: {x: -7.5, y: 0, z: 7.5}
-  bottomRightCorner: {x: 7.5, y: 0, z: -7.5}
-  cellSpawnOffset: {x: 2.5, y: 0, z: 2.5}
+  topLeftCorner: {x: -9, y: 0, z: 9}
+  bottomRightCorner: {x: 9, y: 0, z: -9}
+  cellSpawnOffset: {x: 3, y: 0, z: 3}
   cellPrefab: {fileID: 8182750097808406569, guid: 2cb25103010feef41a8b92c025704db7, type: 3}
   cellParent: {fileID: 1372189407}
 --- !u!4 &855408144
@@ -345,6 +346,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &855408145
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855408142}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -398,7 +412,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 13.5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -476,7 +490,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1878981489
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -538,7 +552,7 @@ Transform:
   m_GameObject: {fileID: 1878981488}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: -0.01, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 3.5}
+  m_LocalScale: {x: 8, y: 10.5, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

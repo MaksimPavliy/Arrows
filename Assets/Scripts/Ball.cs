@@ -8,21 +8,19 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private List<GameObject> arrows;
     [SerializeField] private List<Material> materials;
-    [SerializeField] private float ballSpeed = 4;
+    [SerializeField] private float ballSpeed = 6;
+    [SerializeField] private ParticleSystem deathParticles;
 
-    public Vector3 ballLocation;
     private GameObject arrow;
     private Rigidbody rb;
     private bool enteredCollision = false;
     private bool activeBall = false;
     private Vector3 faceDir;
-    private float ballStartMass;
 
     void Start()
     {
-        ballLocation = transform.position;
         rb = GetComponent<Rigidbody>();
-        ballStartMass = rb.mass;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
         SpawnRandomArrow();
     }
 
@@ -53,60 +51,86 @@ public class Ball : MonoBehaviour
     {
         faceDir = transform.forward;
         Destroy(arrow);
-        rb.mass = 0.01f;
-        rb.isKinematic = false;
+        enteredCollision = true;
         activeBall = true;
+        rb.constraints = RigidbodyConstraints.None;
         rb.velocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collider)
     {
         Ball otherBall = null;
 
-        if (collision.gameObject.tag == "Ball" && activeBall)
+        if (collider.gameObject.tag == "Ball" && activeBall)
         {
-            otherBall = collision.gameObject.GetComponent<Ball>();
+            otherBall = collider.gameObject.GetComponent<Ball>();
 
-            if (!otherBall.enteredCollision && !enteredCollision)
+            if (!otherBall.enteredCollision)
             {
                 activeBall = false;
-                enteredCollision = true;
+                otherBall.enteredCollision = true;
+                rb.constraints = RigidbodyConstraints.FreezeAll;
 
                 float dot = Vector3.Dot(faceDir, otherBall.transform.forward);
 
                 if (dot < -0.75f && dot > -1.25f)
                 {
-                    otherBall.rb.isKinematic = true;
                     Destroy(gameObject);
+                    PlayDeathAnimation();
+                    otherBall.enteredCollision = false;
                 }
                 else
                 {
+                    otherBall.rb.velocity = Vector3.zero;
+                    otherBall.rb.angularVelocity = Vector3.zero;
                     otherBall.Move();
-                    StartCoroutine(SetNewPositionAfterCollision(otherBall.ballLocation));
+                    StartCoroutine(SetNewPositionAfterCollision(otherBall.transform.position));
                 }
             }
         }
     }
 
+    private void OnTriggerExit(Collider collider)
+    {
+        if (collider.gameObject.tag == "Playground")
+        {
+            PlayDeathAnimation();
+        }
+    }
+
+    private void PlayDeathAnimation()
+    {
+        gameObject.SetActive(false);
+        deathParticles = Instantiate(deathParticles, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
+
     private IEnumerator SetNewPositionAfterCollision(Vector3 targetPos)
     {
-        rb.isKinematic = false;
+        yield return new WaitForSeconds(0.1f);
 
-        while (Vector3.Distance(transform.position, targetPos) > 0.2f)
+        while (transform.position != targetPos)
         {
-            rb.velocity = faceDir * ballSpeed;
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, ballSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
-
-        rb.MovePosition(targetPos);
         ResetBall();
     }
 
     private void ResetBall()
     {
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        rb.angularVelocity = Vector3.zero;
+        rb.velocity = Vector3.zero;
         rb.isKinematic = false;
         enteredCollision = false;
         activeBall = false;
         SpawnRandomArrow();
+    }
+
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
     }
 }

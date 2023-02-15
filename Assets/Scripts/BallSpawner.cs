@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider))]
 public class BallSpawner : MonoBehaviour
 {
     [SerializeField] private Ball ballPrefab;
@@ -15,16 +16,15 @@ public class BallSpawner : MonoBehaviour
     [SerializeField] private Transform cellParent;
 
     private List<GameCell> cells = new List<GameCell>();
+    private BoxCollider bc;
 
     void Start()
     {
+        bc = GetComponent<BoxCollider>();
         CreateGameField();
         InstantiateBallsOnStart();
-    }
-
-    void Update()
-    {
-        
+        float colliderBounds = topLeftCorner.z + bottomRightCorner.x + cellSpawnOffset.x;
+        bc.size = new Vector3(colliderBounds, 0.25f, colliderBounds);
     }
 
     private void CreateGameField()
