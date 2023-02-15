@@ -15,12 +15,14 @@ public class Ball : MonoBehaviour
     private Rigidbody rb;
     private bool enteredCollision = false;
     private bool activeBall = false;
+    private Vector3 faceDir;
+    private float ballStartMass;
 
     void Start()
     {
-        var num = 0;
         ballLocation = transform.position;
         rb = GetComponent<Rigidbody>();
+        ballStartMass = rb.mass;
         SpawnRandomArrow();
     }
 
@@ -49,12 +51,12 @@ public class Ball : MonoBehaviour
 
     public void Move()
     {
+        faceDir = transform.forward;
         Destroy(arrow);
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        rb.mass = 0.01f;
         rb.isKinematic = false;
         activeBall = true;
-        rb.velocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;    
+        rb.velocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -67,15 +69,12 @@ public class Ball : MonoBehaviour
 
             if (!otherBall.enteredCollision && !enteredCollision)
             {
-                rb.isKinematic = true;
                 activeBall = false;
                 enteredCollision = true;
 
-                Vector3 forward = transform.TransformDirection(Vector3.forward);
-                Vector3 collisionForward = collision.gameObject.transform.TransformDirection(Vector3.forward);
-                var result = Vector3.Dot(forward, collisionForward);
+                float dot = Vector3.Dot(faceDir, otherBall.transform.forward);
 
-                if (result < -0.5f && result > -1.5f)
+                if (dot < -0.75f && dot > -1.25f)
                 {
                     otherBall.rb.isKinematic = true;
                     Destroy(gameObject);
@@ -91,19 +90,23 @@ public class Ball : MonoBehaviour
 
     private IEnumerator SetNewPositionAfterCollision(Vector3 targetPos)
     {
-        yield return new WaitForSeconds(0.3f);
+        rb.isKinematic = false;
 
-        while (transform.position != targetPos)
+        while (Vector3.Distance(transform.position, targetPos) > 0.2f)
         {
-            var curPosition = transform.position;
-            transform.position = Vector3.MoveTowards(curPosition, targetPos, 0.0045f);
+            rb.velocity = faceDir * ballSpeed;
             yield return new WaitForEndOfFrame();
         }
 
-        transform.rotation = Quaternion.Euler(0, 0, 0);
+        rb.MovePosition(targetPos);
+        ResetBall();
+    }
+
+    private void ResetBall()
+    {
+        rb.isKinematic = false;
         enteredCollision = false;
         activeBall = false;
-        rb.isKinematic = true;
         SpawnRandomArrow();
     }
 }

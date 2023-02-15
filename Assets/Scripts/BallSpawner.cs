@@ -10,7 +10,7 @@ public class BallSpawner : MonoBehaviour
 
     [SerializeField] private Vector3 topLeftCorner;
     [SerializeField] private Vector3 bottomRightCorner;
-    [SerializeField] private Vector3 cellSpawnOffset = new Vector3(2.5f, 0, 2.5f);
+    [SerializeField] private Vector3 cellSpawnOffset = new Vector3(3f, 0, 3f);
     [SerializeField] private GameCell cellPrefab;
     [SerializeField] private Transform cellParent;
 
@@ -57,7 +57,7 @@ public class BallSpawner : MonoBehaviour
     {
         foreach (var cell in cells)
         {
-            Instantiate(ballPrefab, cell.transform.position + new Vector3(0, ballSpawnOffset), Quaternion.identity, ballParent);
+            Instantiate(ballPrefab, cell.transform.position + new Vector3(0, ballSpawnOffset), ballPrefab.transform.rotation, ballParent);
         }
     }
 }
