@@ -16,6 +16,7 @@ public class Ball : MonoBehaviour
     private bool enteredCollision = false;
     private bool activeBall = false;
     private Vector3 faceDir;
+    private Vector3 constantVelocity;
 
     void Start()
     {
@@ -34,9 +35,9 @@ public class Ball : MonoBehaviour
         arrow.transform.SetParent(transform, true);
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-
+        rb.velocity = constantVelocity;
     }
 
     private void OnMouseDown()
@@ -49,12 +50,13 @@ public class Ball : MonoBehaviour
 
     public void Move()
     {
+        GameManager.instance.isPlayerTurn = false;
         faceDir = transform.forward;
         Destroy(arrow);
         enteredCollision = true;
         activeBall = true;
         rb.constraints = RigidbodyConstraints.None;
-        rb.velocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;
+        constantVelocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -107,7 +109,7 @@ public class Ball : MonoBehaviour
 
     private IEnumerator SetNewPositionAfterCollision(Vector3 targetPos)
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.15f);
 
         while (transform.position != targetPos)
         {
@@ -121,9 +123,7 @@ public class Ball : MonoBehaviour
     {
         rb.constraints = RigidbodyConstraints.FreezeAll;
         transform.rotation = Quaternion.Euler(0, 0, 0);
-        rb.angularVelocity = Vector3.zero;
-        rb.velocity = Vector3.zero;
-        rb.isKinematic = false;
+        constantVelocity = Vector3.zero;
         enteredCollision = false;
         activeBall = false;
         SpawnRandomArrow();
@@ -132,5 +132,6 @@ public class Ball : MonoBehaviour
     private void OnDestroy()
     {
         StopAllCoroutines();
+        GameManager.instance.isPlayerTurn = true;
     }
 }

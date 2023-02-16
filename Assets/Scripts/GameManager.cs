@@ -9,12 +9,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if(!instance && instance != this)
+        if (instance && instance != this)
         {
             Destroy(gameObject);
         }
-
-        instance = this;
+        else
+        {
+            instance = this;
+        }
     }
 
     void Start()

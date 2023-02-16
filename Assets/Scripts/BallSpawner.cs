@@ -24,7 +24,7 @@ public class BallSpawner : MonoBehaviour
         CreateGameField();
         InstantiateBallsOnStart();
         float colliderBounds = topLeftCorner.z + bottomRightCorner.x + cellSpawnOffset.x;
-        bc.size = new Vector3(colliderBounds, 0.25f, colliderBounds);
+        bc.size = new Vector3(colliderBounds, 0.5f, colliderBounds);
     }
 
     private void CreateGameField()
