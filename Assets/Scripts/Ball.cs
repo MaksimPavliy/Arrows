@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour
     [SerializeField] private List<Material> materials;
     [SerializeField] private float ballSpeed = 6;
     [SerializeField] private ParticleSystem deathParticles;
+    [SerializeField] private float collisionMovementDelay = 0.12f;
 
     private GameObject arrow;
     private Rigidbody rb;
@@ -109,7 +110,7 @@ public class Ball : MonoBehaviour
 
     private IEnumerator SetNewPositionAfterCollision(Vector3 targetPos)
     {
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(collisionMovementDelay);
 
         while (transform.position != targetPos)
         {

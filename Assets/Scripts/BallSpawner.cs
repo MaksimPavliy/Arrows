@@ -17,9 +17,11 @@ public class BallSpawner : MonoBehaviour
 
     private List<GameCell> cells = new List<GameCell>();
     private BoxCollider bc;
+    private List<Ball> activeBalls = new List<Ball>();
 
     void Start()
     {
+        GameManager.OnRestart += Restartlevel;
         bc = GetComponent<BoxCollider>();
         CreateGameField();
         InstantiateBallsOnStart();
@@ -57,7 +59,22 @@ public class BallSpawner : MonoBehaviour
     {
         foreach (var cell in cells)
         {
-            Instantiate(ballPrefab, cell.transform.position + new Vector3(0, ballSpawnOffset), ballPrefab.transform.rotation, ballParent);
+            activeBalls.Add(Instantiate(ballPrefab, cell.transform.position + new Vector3(0, ballSpawnOffset), ballPrefab.transform.rotation, ballParent));
         }
+    }
+
+    private void Restartlevel()
+    {
+        foreach(var ball in activeBalls)
+        {
+            if(ball)
+            Destroy(ball.gameObject);
+        }
+        InstantiateBallsOnStart();
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnRestart -= Restartlevel;
     }
 }
