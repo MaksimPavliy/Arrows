@@ -8,7 +8,8 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private List<GameObject> arrows;
     [SerializeField] private List<Material> materials;
-    [SerializeField] private float ballSpeed = 6;
+    [SerializeField] private float ballMovementSpeed = 11;
+    [SerializeField] private float ballPositionResetSpeed = 8;
     [SerializeField] private ParticleSystem deathParticles;
     [SerializeField] private float collisionMovementDelay = 0.12f;
 
@@ -57,7 +58,7 @@ public class Ball : MonoBehaviour
         enteredCollision = true;
         activeBall = true;
         rb.constraints = RigidbodyConstraints.None;
-        constantVelocity = (transform.rotation * Vector3.forward).normalized * ballSpeed;
+        constantVelocity = (transform.rotation * Vector3.forward).normalized * ballMovementSpeed;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -114,7 +115,7 @@ public class Ball : MonoBehaviour
 
         while (transform.position != targetPos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, ballSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, ballPositionResetSpeed * Time.deltaTime);
             yield return new WaitForEndOfFrame();
         }
         ResetBall();

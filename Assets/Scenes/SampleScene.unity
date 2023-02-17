@@ -560,9 +560,9 @@ MonoBehaviour:
   ballPrefab: {fileID: 9165150228630321631, guid: 41a84c1ff89565c4b98b33cab4ef2a60, type: 3}
   ballParent: {fileID: 73437482}
   ballSpawnOffset: 0.45
-  topLeftCorner: {x: -10.5, y: 0, z: 10.5}
-  bottomRightCorner: {x: 10.5, y: 0, z: -10.5}
-  cellSpawnOffset: {x: 4.2, y: 0, z: 4.2}
+  topLeftCorner: {x: -10, y: 0, z: 10}
+  bottomRightCorner: {x: 10, y: 0, z: -10}
+  cellSpawnOffset: {x: 4, y: 0, z: 4}
   cellPrefab: {fileID: 8182750097808406569, guid: 2cb25103010feef41a8b92c025704db7, type: 3}
   cellParent: {fileID: 1372189407}
 --- !u!4 &855408144

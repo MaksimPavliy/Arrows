@@ -122,7 +122,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: cc1973a18b792954e9b4cca3d9d33063, type: 2}
   - {fileID: 2100000, guid: 1fcd2ebbb1847a9428dc18366b4ad5f0, type: 2}
   - {fileID: 2100000, guid: 089bca1f35298f941be98cc2e6a75d7a, type: 2}
-  ballSpeed: 12.5
+  ballMovementSpeed: 12
+  ballPositionResetSpeed: 10
   deathParticles: {fileID: 8799193203778017786, guid: 30265bcb9c1a10a49a9eaee7cbd93a0a, type: 3}
   collisionMovementDelay: 0.1
 --- !u!54 &5539903274879904897
@@ -140,7 +141,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
 --- !u!135 &9163637036406789297
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -152,5 +153,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.62
+  m_Radius: 0.605
   m_Center: {x: 0, y: 0, z: 0}
